@@ -1,0 +1,2 @@
+@echo off
+pyinstaller --noconfirm --onefile --windowed --icon ".\\ressources\\images\\logo.ico" --name "MyApp" --clean --add-data ".\\ressources;ressources/" --add-data ".\\conf;conf/" --add-data ".\\pages;pages/" --add-data ".\\utils;utils/" "main.py"
