@@ -1,0 +1,5 @@
+venv/
+dist/
+*.pyc
+tkintercli.egg-info/
+build.bat
