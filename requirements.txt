@@ -1,0 +1,5 @@
+click==8.2.1
+colorama==0.4.6
+Pillow==11.2.1
+PyYAML==6.0.2
+setuptools==80.9.0
