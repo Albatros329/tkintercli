@@ -64,12 +64,20 @@ jobs:
           name: "Nightly Release (${{ steps.date.outputs.date }})"
           tag_name: nightly
           body: |
-            **Nightly build** créée automatiquement le ${{ steps.date.outputs.date }}
+            > [!NOTE]
+            > Cette release a été générée automatiquement.
             
-            ## Derniers commits
+            ### Derniers commits
             ${{ steps.get_commits.outputs.commits }}
+
+            ### Installation
+            ```
+            pip install tkintercli-nightly-build.whl
+            ```
             
             Cette version est une pré-release et peut contenir des bugs.
+
+
           prerelease: true
           files: |
             nightly/tkintercli-nightly-build.whl
