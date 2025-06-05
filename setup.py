@@ -35,7 +35,8 @@ setup(
         "PyYAML",
         "setuptools",
         "Pillow",
+        "pyinstaller"
     ],
     python_requires='>=3.10',
-    url="https://github.com/Albatros329/atc_tracker/"
+    url="https://github.com/Albatros329/tkintercli/"
 )
