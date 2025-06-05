@@ -4,3 +4,7 @@ dist/
 tkintercli.egg-info/
 /build.bat
 TODO.md
+mkdocs.yml
+/docs
+*.toc
+/Test
