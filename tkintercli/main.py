@@ -1,10 +1,15 @@
+import json
 import shutil
 import os
+import subprocess
 import sys
 import click
 from colorama import init, Fore
 import yaml
 import getpass
+import time
+from tqdm import tqdm
+import threading
 
 def snake_to_pascal(s):
     return ''.join(part.capitalize() for part in s.split('_'))
@@ -41,12 +46,6 @@ def new(name, venv):
             yaml.dump(data, f)
             f.close()
 
-        with open(f"{PATH}\\{name}\\build.bat", "r+", encoding="utf-8") as f:
-            data = f.read()
-            f.seek(0)
-            f.write(data.replace("MyApp", name))
-            f.close()
-
         if venv:
             print(Fore.BLUE + "Création de l'environnement virtuel...")
             os.system(f'python -m venv "{PATH}\\{name}\\venv"')
@@ -55,6 +54,57 @@ def new(name, venv):
         print(Fore.GREEN + f"Succès: Le projet {name} a été créé.")
     else:
         print(Fore.RED + "Erreur: dossier déjà existant.")
+
+
+
+@cli.command()
+def build():
+    """Compiler le projet"""
+    if os.path.exists(f"{PATH}\\main.py") and os.path.exists(f"{PATH}\\conf") and os.path.exists(f"{PATH}\\views"):
+        pip_list = json.loads(subprocess.check_output(['pip','list','--format=json']))
+        packages = []
+        for i in pip_list:
+            packages.append(i["name"])
+
+        if not "pyinstaller" in packages:
+            print(Fore.RED + "Erreur: pyinstaller doit être installé sur cette machine.\n-> pip install pyinstaller")
+        else:
+            with open(f"{PATH}\\conf\\app.conf", "r", encoding="utf-8") as f:
+                data = yaml.safe_load(f)
+                f.close()
+            
+            
+            print(Fore.CYAN + "Lancement de la compilation avec PyInstaller...")
+            
+            command = subprocess.run(
+                [
+                    "pyinstaller",
+                    "--noconfirm",
+                    "--onefile",
+                    "--windowed",
+                    "--icon", ".\\ressources\\images\\logo.ico",
+                    "--name", data['DEFAULT']['app_name'],
+                    "--clean",
+                    "--add-data", ".\\ressources;ressources/",
+                    "--add-data", ".\\conf;conf/",
+                    "--add-data", ".\\views;views/",
+                    "main.py"
+                ],
+                shell=True,
+                text=True
+            )
+
+            if command.stderr:
+                print(Fore.YELLOW + "Erreurs/Warnings de PyInstaller:")
+                print(command.stderr)
+            if command.returncode != 0:
+                print(Fore.RED + f"Échec: PyInstaller s'est terminé avec le code {command.returncode}")
+            else:
+                print(Fore.GREEN + f"Succès: Exécutable disponible dans le dossier {PATH}\\dist")
+    else:
+        print(Fore.RED + "Erreur: cette commande est uniquement disponible dans les projets tkintercli")
+    
+
 
 
 @add.command()
