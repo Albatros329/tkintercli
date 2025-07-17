@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     package_data={
-        'tkintercli': ['model/**/*', 'model/**/.*', 'icons/**/*', 'icons/**/.*'],
+        'tkintercli': ['model/**/*', 'model/**/.*', 'icons/**/*', 'icons/**/.*', 'widgets/**/*', 'widgets/**/.*'],
     },
     include_package_data=True,
     entry_points={
